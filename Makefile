@@ -16,10 +16,10 @@ esp32: build/toolchain-esp32-$(VER).tar.xz
 esp8266: build/toolchain-esp8266-$(VER).tar.xz
 
 build/lx106/Makefile:
-	$Qcd build && git clone --recursive https://github.com/pfalcon/esp-open-sdk.git lx106 && patch -p0 < ../../esp8266_isl_abb32e6.patch
+	$Qcd build && git clone --recursive https://github.com/pfalcon/esp-open-sdk.git lx106
 
 build/lx106/patched: build/lx106/Makefile
-	$Qcd "$(dir $@)" && patch -p0 < ../../esp8266-configure.patch
+	$Qcd "$(dir $@)" && patch -p0 < ../../esp8266-configure.patch && patch -p0 < ../../esp8266_isl_abb32e6.patch
 	@touch $@
 
 esp8266-$(VER)/bin/xtensa-lx106-elf-gcc: build/lx106/patched
@@ -34,11 +34,11 @@ build/toolchain-esp8266-$(VER).tar.xz: esp8266-$(VER)/bin/xtensa-lx106-elf-gcc
 
 
 build/esp32/bootstrap:
-	$Qcd build && git clone -b esp32-2019r1_ctng-1.23.x https://github.com/espressif/crosstool-NG.git esp32 && patch -p0 < ../../esp32_isl_abb32e6.patch
+	$Qcd build && git clone -b esp32-2019r1_ctng-1.23.x https://github.com/espressif/crosstool-NG.git esp32
 	@touch $@
 
 build/esp32/patched: build/esp32/bootstrap
-	$Qcd "$(dir $@)" && patch -p0 < ../../esp32-configure.patch
+	$Qcd "$(dir $@)" && patch -p0 < ../../esp32-configure.patch && patch -p0 < ../../esp32_isl_abb32e6.patch
 	@touch $@
 
 build/esp32/Makefile: build/esp32/patched
